@@ -1,6 +1,7 @@
 package org.flashgate.reflection {
 
 public class ParameterInfo {
+
     private var _type:String;
     private var _isOptional:Boolean;
 

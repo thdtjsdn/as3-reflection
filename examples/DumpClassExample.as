@@ -5,25 +5,33 @@ import flash.utils.IDataOutput;
 import flash.utils.IExternalizable;
 
 import org.flashgate.reflection.ClassInfo;
-import org.flashgate.reflection.ConstantInfo;
 import org.flashgate.reflection.FieldInfo;
+import org.flashgate.reflection.MemberInfo;
 import org.flashgate.reflection.MetadataInfo;
+import org.flashgate.reflection.MetadataParam;
 import org.flashgate.reflection.MethodInfo;
+import org.flashgate.reflection.ParameterInfo;
 
 [SWF(width=640, height=480)]
 public class DumpClassExample extends Sprite implements IExternalizable {
 
     public function DumpClassExample() {
-        var info:ClassInfo = ClassInfo.getClassInfo(DumpClassExample);
-        dump(info);
-        //trace(describeType(DumpClassExample));
-
+        dump(DumpClassExample);
+        dump(ClassInfo);
+        dump(FieldInfo);
+        dump(MemberInfo);
+        dump(MetadataInfo);
+        dump(MetadataParam);
+        dump(MethodInfo);
+        dump(ParameterInfo);
     }
 
     public static var test:int = 1;
     public static const TEST:String = "test";
 
-    public static function dump(info:ClassInfo):void {
+    public static function dump(value:*):void {
+        var info:ClassInfo = ClassInfo.getClassInfo(value);
+
         trace("Class: " + info.name);
         trace("Superclass: " + info.superClass);
         trace("Package Name: " + info.packageName);
@@ -77,4 +85,3 @@ public class DumpClassExample extends Sprite implements IExternalizable {
     }
 }
 }
-

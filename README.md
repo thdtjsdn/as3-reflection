@@ -54,6 +54,6 @@ Example:
 
 Bug report:
 
-- [https://github.com/flashgate/as3-reflection/issues](https://github.com/flashgate/as3-reflection/issues)
+- [https://github.com/flashgate/as3-reflection/issues/new](https://github.com/flashgate/as3-reflection/issues/new)
  
 

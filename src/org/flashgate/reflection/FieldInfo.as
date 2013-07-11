@@ -2,6 +2,7 @@ package org.flashgate.reflection {
 import flash.utils.getDefinitionByName;
 
 public class FieldInfo extends MemberInfo {
+
     private var _type:String;
     private var _readable:Boolean;
     private var _writable:Boolean;
@@ -33,10 +34,6 @@ public class FieldInfo extends MemberInfo {
 
     public function get type():String {
         return _type;
-    }
-
-    public function get typeInfo():ClassInfo {
-        return ClassInfo.getClassInfo(_type);
     }
 
     override public function toString():String {

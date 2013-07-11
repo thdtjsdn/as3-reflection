@@ -2,19 +2,20 @@ package org.flashgate.reflection {
 import flash.utils.getDefinitionByName;
 
 public class MemberInfo {
+
     private var _info:Object;
     private var _uri:String;
     private var _name:String;
     private var _declaredBy:String;
     private var _metadata:Vector.<MetadataInfo>;
-    private var _isStatic:Boolean;
+    private var _static:Boolean;
 
     public function MemberInfo(info:Object, declaredBy:String = null, isStatic:Boolean = false) {
         _info = info;
         _uri = info["uri"] as String;
         _name = info["name"] as String;
         _declaredBy = declaredBy || info["declaredBy"] as String;
-        _isStatic = isStatic;
+        _static = isStatic;
     }
 
     public function get uri():String {
@@ -26,29 +27,32 @@ public class MemberInfo {
     }
 
     public function get isStatic():Boolean {
-        return _isStatic;
+        return _static;
     }
 
     public function get declaredBy():String {
         return _declaredBy;
     }
 
-    public function get declaredByInfo():ClassInfo {
-        return ClassInfo.getClassInfo(_declaredBy);
-    }
-
     public function get metadata():Vector.<MetadataInfo> {
-        return _metadata || listMetadata(_info["metadata"] as Array);
+        return _metadata || (_metadata = listMetadata());
     }
 
-    private function listMetadata(items:Array):Vector.<MetadataInfo> {
-        _metadata = new Vector.<MetadataInfo>();
-        if (items) {
-            for each (var item:Object in items) {
-                _metadata.push(new MetadataInfo(item));
+    public function getMetadata(name:String):MetadataInfo {
+        for each(var meta:MetadataInfo in metadata) {
+            if (meta.name == name) {
+                return meta;
             }
         }
-        return _metadata;
+        return null;
+    }
+
+    private function listMetadata():Vector.<MetadataInfo> {
+        var result:Vector.<MetadataInfo> = new Vector.<MetadataInfo>();
+        for each (var item:Object in info["metadata"]) {
+            result.push(new MetadataInfo(item));
+        }
+        return result;
     }
 
     protected function get info():Object {

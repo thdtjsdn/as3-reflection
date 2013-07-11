@@ -1,6 +1,7 @@
 package org.flashgate.reflection {
 
 public class MetadataInfo {
+
     private var _info:Object;
     private var _name:String;
     private var _params:Vector.<MetadataParam>;
@@ -10,18 +11,33 @@ public class MetadataInfo {
         _name = info["name"] as String;
     }
 
-    public function get params():Vector.<MetadataParam> {
-        return _params || listParams(_info["value"] as Array);
+    public function get name():String {
+        return _name;
     }
 
-    private function listParams(items:Array):Vector.<MetadataParam> {
-        _params = new Vector.<MetadataParam>();
-        if (items) {
-            for each (var item:Object in items) {
-                _params.push(new MetadataParam(item));
+    public function get params():Vector.<MetadataParam> {
+        return _params || (_params = listParams());
+    }
+
+    public function getParam(name:String):MetadataParam {
+        for each(var item:MetadataParam in params) {
+            if (item.name == name) {
+                return item;
             }
         }
-        return _params;
+        return null;
+    }
+
+    protected function get info():Object {
+        return _info;
+    }
+
+    private function listParams():Vector.<MetadataParam> {
+        var result:Vector.<MetadataParam> = new Vector.<MetadataParam>();
+        for each (var item:Object in info["value"]) {
+            result.push(new MetadataParam(item));
+        }
+        return result;
     }
 
     public function toString():String {

@@ -4,11 +4,6 @@ import avmplus.getQualifiedClassName;
 
 import flash.utils.Dictionary;
 import flash.utils.getDefinitionByName;
-import flash.utils.getQualifiedSuperclassName;
-
-import org.flashgate.reflection.ConstantInfo;
-
-import org.flashgate.reflection.ConstantInfo;
 
 public class ClassInfo {
 
@@ -25,6 +20,8 @@ public class ClassInfo {
     }
 
     private var _type:Class;
+    private var _statics:Boolean;
+
     private var _name:String;
     private var _short:String;
     private var _package:String;
@@ -34,11 +31,12 @@ public class ClassInfo {
     private var _methods:Vector.<MethodInfo>;
     private var _fields:Vector.<FieldInfo>;
     private var _metadata:Vector.<MetadataInfo>;
-    private var _static:Object;
+    private var _traits:Object;
     private var _instance:Object;
 
-    public function ClassInfo(type:Class) {
+    public function ClassInfo(type:Class, discoverStaticMembers:Boolean = true) {
         _type = type;
+        _statics = discoverStaticMembers;
         _name = getQualifiedClassName(type);
 
         var index:int = _name.indexOf("::");
@@ -49,13 +47,10 @@ public class ClassInfo {
             _package = "";
             _short = _name;
         }
-
-        trace(JSON.stringify(traits));
-        trace(JSON.stringify(instance));
     }
 
     protected function get traits():Object {
-        return _static || (_static = AVMPlusAdapter.describeTypeJson(_type, AVMPlusAdapter.INCLUDE_ALL_TRAITS));
+        return _traits || (_traits = AVMPlusAdapter.describeTypeJson(_type, AVMPlusAdapter.INCLUDE_ALL_TRAITS));
     }
 
     protected function get instance():Object {
@@ -129,14 +124,25 @@ public class ClassInfo {
         return _metadata || (_metadata = listMetadata());
     }
 
+    public function getMetadata(name:String):MetadataInfo {
+        for each(var meta:MetadataInfo in metadata) {
+            if (meta.name == name) {
+                return meta;
+            }
+        }
+        return null;
+    }
+
     private function listMethods():Vector.<MethodInfo> {
         var result:Vector.<MethodInfo> = new Vector.<MethodInfo>();
         var item:Object;
         for each (item in instance["traits"]["methods"]) {
             result.push(new MethodInfo(item));
         }
-        for each (item in traits["traits"]["methods"]) {
-            result.push(new MethodInfo(item, _name, true));
+        if (_statics) {
+            for each (item in traits["traits"]["methods"]) {
+                result.push(new MethodInfo(item, _name, true));
+            }
         }
         return result;
     }
@@ -158,11 +164,13 @@ public class ClassInfo {
         for each (item in instance["traits"]["accessors"]) {
             result.push(new FieldInfo(item));
         }
-        for each (item in traits["traits"]["variables"]) {
-            result.push(new FieldInfo(item, _name,  true));
-        }
-        for each (item in traits["traits"]["accessors"]) {
-            result.push(new FieldInfo(item, _name,  true));
+        if (_statics) {
+            for each (item in traits["traits"]["variables"]) {
+                result.push(new FieldInfo(item, _name, true));
+            }
+            for each (item in traits["traits"]["accessors"]) {
+                result.push(new FieldInfo(item, _name, true));
+            }
         }
         return result;
     }

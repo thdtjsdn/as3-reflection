@@ -1,6 +1,7 @@
 package org.flashgate.reflection {
 
 public class MetadataParam {
+
     private var _name:String;
     private var _value:String;
 
