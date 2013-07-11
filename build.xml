@@ -8,8 +8,8 @@
     <target name="build" depends="clear">
         <compc output="${build}/${ant.project.name}.swc">
             <debug>false</debug>
-            <source-path path-element="src"/>
-            <include-sources dir="src" includes="*"/>
+            <source-path path-element="${sources}"/>
+            <include-sources dir="${sources}" includes="*"/>
         </compc>
     </target>
 
