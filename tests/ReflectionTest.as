@@ -34,10 +34,11 @@ dynamic final public class ReflectionTest extends TestCase {
     [Test]
     public function testCache():void {
         assertEquals(ClassInfo.getClassInfo(Sprite), ClassInfo.getClassInfo(Sprite));
-        assertEquals(ClassInfo.getClassInfo("flash.display::Sprite"), ClassInfo.getClassInfo("flash.display::Sprite"));
-        assertEquals(ClassInfo.getClassInfo(new Sprite()), ClassInfo.getClassInfo(new Sprite()));
+        assertEquals(ClassInfo.getClassInfoByName("flash.display::Sprite"), ClassInfo.getClassInfoByName("flash.display::Sprite"));
+        assertEquals(ClassInfo.getClassInfoByInstance(new Sprite()), ClassInfo.getClassInfoByInstance(new Sprite()));
         assertEquals(ClassInfo.getClassInfo(null), null);
-        assertEquals(ClassInfo.getClassInfo("flash.display::Sprite"), ClassInfo.getClassInfo(Sprite));
+        assertEquals(ClassInfo.getClassInfoByInstance(null), null);
+        assertEquals(ClassInfo.getClassInfoByName("flash.display::Sprite"), ClassInfo.getClassInfo(Sprite));
     }
 
     [Test]
@@ -80,7 +81,6 @@ dynamic final public class ReflectionTest extends TestCase {
 
     [Test]
     public function testBases():void {
-        assertEquals(ClassInfo.getClassInfo(null), null);
         assertEquals(ClassInfo.getClassInfo(undefined), null);
         assertEquals(ClassInfo.getClassInfo(Object).superClass, null);
         assertEquals(ClassInfo.getClassInfo(Class).superClass, "Object");
@@ -88,17 +88,17 @@ dynamic final public class ReflectionTest extends TestCase {
 
     [Test(description="test")]
     public function testMetadata():void {
-        var meta:MetadataInfo = ClassInfo.getClassInfo(this).getMethod("testMetadata").getMetadata("Test");
+        var meta:MetadataInfo = ClassInfo.getClassInfoByInstance(this).getMethod("testMetadata").getMetadata("Test");
         assertEquals(meta.name, "Test");
         assertEquals(meta.getParam("description").value, "test");
     }
 
     [Test]
     public function testNumbers():void {
-        assertEquals(ClassInfo.getClassInfo(NaN).name, "Number");
-        assertEquals(ClassInfo.getClassInfo(Number.POSITIVE_INFINITY).name, "Number");
-        assertEquals(ClassInfo.getClassInfo(Number.NEGATIVE_INFINITY).name, "Number");
-        assertEquals(ClassInfo.getClassInfo(0).name, "Number");
+        assertEquals(ClassInfo.getClassInfoByInstance(NaN).name, "Number");
+        assertEquals(ClassInfo.getClassInfoByInstance(Number.POSITIVE_INFINITY).name, "Number");
+        assertEquals(ClassInfo.getClassInfoByInstance(Number.NEGATIVE_INFINITY).name, "Number");
+        assertEquals(ClassInfo.getClassInfoByInstance(0).name, "Number");
         assertEquals(ClassInfo.getClassInfo(int).name, "int");
         assertEquals(ClassInfo.getClassInfo(uint).name, "uint");
         assertEquals(ClassInfo.getClassInfo(Math).getField("PI").type, "Number");

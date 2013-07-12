@@ -9,13 +9,15 @@ public class ClassInfo {
 
     protected static var _cache:Dictionary = new Dictionary(true);
 
-    public static function getClassInfo(type:*):ClassInfo {
-        if (type is String) {
-            type = getDefinitionByName(type);
-        } else if (type is Class) {
-        } else if (type is Object) {
-            type = (type as Object).constructor as Class;
-        }
+    public static function getClassInfoByName(name:String):ClassInfo {
+        return getClassInfo(getDefinitionByName(name) as Class);
+    }
+
+    public static function getClassInfoByInstance(instance:Object):ClassInfo {
+        return instance == null ? null : getClassInfo((instance as Object).constructor as Class);
+    }
+
+    public static function getClassInfo(type:Class):ClassInfo {
         return type ? _cache[type] || (_cache[type] = new ClassInfo(type)) : null;
     }
 
