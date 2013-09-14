@@ -1,7 +1,7 @@
 package avmplus {
 
 /**
- * AVM2(avmplus) Adapter
+ * AVM2(avmplus) Delegator
  */
 public class AVMPlusDelegator {
 

@@ -1,5 +1,5 @@
 package org.flashgate.reflection {
-import avmplus.AVMPlusAdapter;
+import avmplus.AVMPlusDelegator;
 import avmplus.getQualifiedClassName;
 
 import flash.utils.Dictionary;
@@ -52,11 +52,11 @@ public class ClassInfo {
     }
 
     protected function get traits():Object {
-        return _traits || (_traits = AVMPlusAdapter.describeTypeJson(_type, AVMPlusAdapter.INCLUDE_ALL_TRAITS));
+        return _traits || (_traits = AVMPlusDelegator.describeTypeJson(_type, AVMPlusDelegator.INCLUDE_ALL_TRAITS));
     }
 
     protected function get instance():Object {
-        return _instance || (_instance = AVMPlusAdapter.describeTypeJson(_type, AVMPlusAdapter.INCLUDE_ALL_ITRAITS));
+        return _instance || (_instance = AVMPlusDelegator.describeTypeJson(_type, AVMPlusDelegator.INCLUDE_ALL_ITRAITS));
     }
 
     public function get name():String {

@@ -16,6 +16,7 @@ import org.flashgate.reflection.ParameterInfo;
 public class DumpClassExample extends Sprite implements IExternalizable {
 
     public function DumpClassExample() {
+        /*
         dump(DumpClassExample);
         dump(ClassInfo);
         dump(FieldInfo);
@@ -24,6 +25,48 @@ public class DumpClassExample extends Sprite implements IExternalizable {
         dump(MetadataParam);
         dump(MethodInfo);
         dump(ParameterInfo);
+        */
+        var info:ClassInfo = ClassInfo.getClassInfoByInstance({x:1, y:1});
+        trace("Class: " + info.name);
+        trace("Is Final: " + info.isFinal);
+
+        trace("Metadata: ");
+        for each(var metadata:MetadataInfo in info.metadata) {
+            trace("\t" + metadata);
+        }
+
+        trace("Bases: ");
+        for each(var base:String in info.baseClasses) {
+            trace("\t" + base);
+        }
+
+        trace("Interfaces: ");
+        for each(var item:String in info.interfaces) {
+            trace("\t" + item);
+        }
+
+        trace("Fields: ");
+        for each(var field:FieldInfo in info.fields) {
+            var line:String = "\t";
+            if (field.isStatic) line += "static ";
+            if (field.metadata.length) line += field.metadata.join("") + " ";
+            if (field.isReadable) line += "get ";
+            if (field.isWritable) line += "set ";
+            if (field.uri) line += field.uri + "::";
+            line += field.name + ": ";
+            line += field.type;
+            trace(line);
+        }
+
+        trace("Methods: ");
+        for each(var method:MethodInfo in info.methods) {
+            var line:String = "\t"
+            if (method.isStatic) line += "static ";
+            if (method.metadata.length) line += method.metadata.join("") + " ";
+            if (method.uri) line += method.uri + "::";
+            line += method.name + "(" + method.params.join(", ") + "): " + method.returnType;
+            trace(line);
+        }
     }
 
     public static var test:int = 1;

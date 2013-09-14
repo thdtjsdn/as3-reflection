@@ -1,7 +1,7 @@
 #AS3 Reflection#
 
-Small AS3 reflection for AVM2(avmplus) without access rights or bytecode modification.
-Does not use leaky XML-version of describeType.
+Small AS3 reflection for AVM2.
+Does not use memory expensive XML-version of describeType.
 
 Example:
 
