@@ -3,7 +3,7 @@ package avmplus {
 /**
  * AVM2(avmplus) Adapter
  */
-public class AVMPlusAdapter {
+public class AVMPlusDelegator {
 
     public static const INCLUDE_BASES:uint = avmplus.INCLUDE_BASES;
     public static const INCLUDE_INTERFACES:uint = avmplus.INCLUDE_INTERFACES;
